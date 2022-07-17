@@ -36,8 +36,15 @@ public class Handler implements Runnable {
                 request.append("\r\n");
             }
             System.out.println(request);
+            String[] msgS = request.toString().split("\r");
+            // .ico 是浏览器页面的图标文件
+            // 是浏览器默认会向服务器发送的请求
+            if (msgS[1].endsWith(".ico")) {
+                writer.write("HTTP/1.1 200 OK");
+                writer.println("Content-Type: text/html;charset=UTF-8");
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
