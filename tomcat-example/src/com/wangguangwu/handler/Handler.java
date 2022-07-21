@@ -1,7 +1,11 @@
 package com.wangguangwu.handler;
 
+
+import org.springframework.util.StringUtils;
+
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 请求处理程序
@@ -36,15 +40,21 @@ public class Handler implements Runnable {
                 request.append("\r\n");
             }
             System.out.println(request);
-            String[] msgS = request.toString().split("\r");
+            String[] msgS = request.toString().split(" ");
             // .ico 是浏览器页面的图标文件
             // 是浏览器默认会向服务器发送的请求
-            if (msgS[1].endsWith(".ico")) {
+            if (msgS.length > 2 && msgS[1].endsWith(".ico")) {
                 writer.write("HTTP/1.1 200 OK");
                 writer.println("Content-Type: text/html;charset=UTF-8");
+            } else {
+                writer.write("HTTP/1.1 200 OK");
+                writer.println("Content-Type: text/html;charset=UTF-8");
+                byte[] bytes = request.toString().getBytes(StandardCharsets.UTF_8);
+                outputStream.write(bytes);
             }
-        } catch (IOException e) {
-//            e.printStackTrace();
+        } catch (
+                IOException e) {
+            e.printStackTrace();
         }
     }
 
