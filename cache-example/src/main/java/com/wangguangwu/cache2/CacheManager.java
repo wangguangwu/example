@@ -21,11 +21,26 @@ public class CacheManager {
         super();
     }
 
+    /**
+     * 获取布尔值的缓存
+     */
     public static boolean getSimpleFlag(String key) {
         try {
             return (Boolean) cacheMap.get(key);
         } catch (NullPointerException e) {
             return false;
+        }
+    }
+
+    /**
+     * 设置布尔值缓存
+     */
+    public static synchronized boolean setSimpleFlag(String key, boolean flag) {
+        if (getSimpleFlag(key)) {
+            return false;
+        } else {
+            cacheMap.put(key, flag);
+            return true;
         }
     }
 
