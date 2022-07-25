@@ -1,5 +1,7 @@
 package com.example.threadexample.com.wangguangwu.threadsafe;
 
+import org.springframework.util.Assert;
+
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -17,21 +19,24 @@ public class TestConcurrentHashMap1 {
 
     private static final int TEST_TIMES = 10;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < TEST_TIMES; i++) {
             System.out.println("测试结果：" + test());
         }
     }
 
-    private static int test() {
+    private static int test() throws InterruptedException {
         Map<String, Integer> map = new ConcurrentHashMap<>(100);
         ExecutorService threadPool = Executors.newCachedThreadPool();
         for (int i = 0; i < TEST_TIMES; i++) {
             threadPool.execute(new MyTask(map));
         }
-        // 理解销毁 ExecutorService
+        // 销毁 ExecutorService
         // 它会让 ExecutorService 停止接收新的任务，并且等到现有任务全部执行完毕后再销毁
+        // 在调用 shutdown() 方法后，已经添加的任务会继续执行，但是不会阻塞，所以 main 线程会先执行
         threadPool.shutdown();
+        boolean success = threadPool.awaitTermination(1, TimeUnit.HOURS);
+        Assert.isTrue(success, "线程池关闭失败");
 
         return map.get(MyTask.KEY);
     }
