@@ -24,7 +24,7 @@ public class TestConcurrentHashMap1 {
     }
 
     private static int test() {
-        Map<String, Integer> map = new ConcurrentHashMap<>(800);
+        Map<String, Integer> map = new ConcurrentHashMap<>(100);
         ExecutorService threadPool = Executors.newCachedThreadPool();
         for (int i = 0; i < TEST_TIMES; i++) {
             threadPool.execute(new MyTask(map));
@@ -61,7 +61,7 @@ public class TestConcurrentHashMap1 {
                 // 1. map.get(key)
                 // 2. +1
                 // 3. map.put(value)
-                // 其中第 1 步和第 3 步，因为使用了 ConcurrentHashMap，单独来说都是线程安全的
+                // 其中第 1 步 和第 3 步，因为使用了 ConcurrentHashMap，单独来说都是线程安全的
                 // 但在上面的代码中，map 本身是一个共享变量，当线程 A 执行 map.get 时，其他线程可能正在执行 map.put
                 // 这样，当线程 A 执行到 map.put 时，此时线程 A 中的值就已经是脏数据了，然后脏数据覆盖了真值，导致线程不安全
                 // In a word，ConcurrentHashMap 保证调用 get 方法时获取到的是此时的真值，但无法保证在调用 put 方法时，当前的获取到的值依旧是真值
