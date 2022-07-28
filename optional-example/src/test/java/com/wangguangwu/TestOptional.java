@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * @author wangguangwu
@@ -132,6 +133,11 @@ class TestOptional {
 
         System.out.println(stringOptional1.get());
         System.out.println(stringOptional2.isPresent());
+
+        String name = "hello world";
+        Optional<Integer> integer = Optional.of(name)
+                .map(String::length);
+        System.out.println(integer.orElse(0));
     }
 
     @Test
@@ -144,6 +150,40 @@ class TestOptional {
 
         System.out.println(stringOptional1.get().get());
         System.out.println(stringOptional2.get());
+    }
+
+    @Test
+    void testFilterAndPredicate() {
+        String password1 = "123456";
+        String password2 = "12345";
+
+        Predicate<String> len5 = pwd -> pwd.length() > 5;
+        Predicate<String> len10 = pwd -> pwd.length() < 10;
+
+        boolean result1 = Optional.ofNullable(password1)
+                .filter(len5.and(len10))
+                .isPresent();
+        boolean result2 = Optional.ofNullable(password2)
+                .filter(len5.and(len10))
+                .isPresent();
+        System.out.println(result1);
+        System.out.println(result2);
+    }
+
+    @Test
+    void testMapAndFilter() {
+        String password = "PassWord";
+
+        Predicate<String> len6 = pwd -> pwd.length() > 6;
+        Predicate<String> len10 = pwd -> pwd.length() < 10;
+        Predicate<String> eq = pwd -> "password".equals(pwd);
+
+        boolean result = Optional
+                .ofNullable(password)
+                .map(String::toLowerCase)
+                .filter(len6.and(len10).and(eq))
+                .isPresent();
+        System.out.println(result);
     }
 
 }
