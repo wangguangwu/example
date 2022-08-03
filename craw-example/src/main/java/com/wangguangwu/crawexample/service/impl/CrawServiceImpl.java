@@ -1,6 +1,7 @@
 package com.wangguangwu.crawexample.service.impl;
 
 import com.wangguangwu.crawexample.service.CrawService;
+import com.wangguangwu.crawexample.util.BossUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
@@ -31,7 +32,8 @@ public class CrawServiceImpl implements CrawService {
     }
 
     private void crawData() {
-        throw new UnsupportedOperationException();
+        // 获取 Boss 直聘的 cookie
+
     }
 
     private void parseData() {
