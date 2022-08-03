@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "ok.http.connnect-timeout",
+      "type": "java.lang.String",
+      "description": "Description for ok.http.connnect-timeout."
+    },
+    {
+      "name": "ok.http.read-timeout",
+      "type": "java.lang.String",
+      "description": "Description for ok.http.read-timeout."
+    },
+    {
+      "name": "ok.http.keep-alive-duration",
+      "type": "java.lang.String",
+      "description": "Description for ok.http.keep-alive-duration."
+    },
+    {
+      "name": "ok.http.max-idle-connection",
+      "type": "java.lang.String",
+      "description": "Description for ok.http.max-idle-connection."
+    },
+    {
+      "name": "ok.http.write-timeout",
+      "type": "java.lang.String",
+      "description": "Description for ok.http.write-timeout."
+    }
+  ] }
