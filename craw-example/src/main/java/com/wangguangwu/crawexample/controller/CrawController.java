@@ -21,11 +21,11 @@ public class CrawController {
     private CrawService crawService;
 
     @GetMapping("/craw")
-    public void testCraw() {
+    public void testCraw(String url) {
         StopWatch stopWatch = new StopWatch();
         log.info("调用爬虫接口");
         stopWatch.start();
-        crawService.wholeProcess();
+        crawService.wholeProcess(url);
         stopWatch.stop();
         log.info("爬虫接口运行总耗时: {} ms", stopWatch.getTotalTimeMillis());
     }

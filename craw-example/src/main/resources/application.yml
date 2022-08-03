@@ -4,3 +4,13 @@ spring:
     url: jdbc:mysql://localhost:3306/masterdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: 123456
+
+ok:
+  http:
+    connnect-timeout: 30
+    read-timeout: 30
+    write-timeout: 30
+    # 连接池中整体的空闲连接的最大数量
+    max-idle-connections: 200
+    # 连接空闲时间最多为 300 s
+    keep-alive-duration: 300

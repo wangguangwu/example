@@ -14,11 +14,11 @@ import org.springframework.util.StopWatch;
 public class CrawServiceImpl implements CrawService {
 
     @Override
-    public void wholeProcess() {
+    public void wholeProcess(String url) {
         StopWatch stopWatch = new StopWatch();
         // 爬取数据
         stopWatch.start("爬取数据");
-        crawData();
+        crawData(url);
         stopWatch.stop();
         // 数据解析
         stopWatch.start("数据解析");
@@ -31,8 +31,10 @@ public class CrawServiceImpl implements CrawService {
         log.info("爬取数据总耗时: {}", stopWatch.prettyPrint());
     }
 
-    private void crawData() {
+    private void crawData(String url) {
         // 获取 Boss 直聘的 cookie
+        String zpStoken = BossUtil.getZpStoken(url);
+        // 发送 http 请求
 
     }
 

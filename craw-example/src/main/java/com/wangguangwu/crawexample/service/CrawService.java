@@ -7,7 +7,9 @@ public interface CrawService {
 
     /**
      * 全流程
+     *
+     * @param url 访问 url
      */
-    void wholeProcess();
+    void wholeProcess(String url);
 
 }

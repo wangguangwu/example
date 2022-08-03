@@ -1,6 +1,6 @@
-package com.wangguangwu.okhttpexample.config;
+package com.wangguangwu.crawexample.config;
 
-import com.wangguangwu.okhttpexample.properties.HttpProperties;
+import com.wangguangwu.crawexample.properties.HttpProperties;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;

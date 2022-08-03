@@ -1,9 +1,8 @@
-package com.wangguangwu.okhttpexample.component;
+package com.wangguangwu.crawexample.component;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -194,5 +193,3 @@ public class OkHttpCli {
     }
 
 }
-
-

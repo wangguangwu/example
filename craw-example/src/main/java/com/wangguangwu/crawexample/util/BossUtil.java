@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  *
  * @author wangguangwu
  */
-public class BossUtil {
+public final class BossUtil {
 
     private static final String KEY = "__zp_stoken__";
 
