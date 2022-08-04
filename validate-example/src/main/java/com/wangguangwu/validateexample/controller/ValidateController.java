@@ -2,6 +2,8 @@ package com.wangguangwu.validateexample.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.wangguangwu.validateexample.entity.User;
+import com.wangguangwu.validateexample.groups.Create;
+import com.wangguangwu.validateexample.groups.Update;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -24,10 +26,25 @@ public class ValidateController {
      * @param result error
      * @return result
      */
-    @PostMapping("/validate")
-    public String validate(@RequestBody @Validated User user, BindingResult result) {
+    @PostMapping("/validateCreate")
+    public String validateCreate(@RequestBody @Validated(Create.class) User user, BindingResult result) {
+        return getString(user, getErrorMessage(result));
+    }
+
+    /**
+     * 通过注解实现
+     *
+     * @param user   user
+     * @param result error
+     * @return result
+     */
+    @PostMapping("/validateUpdate")
+    public String validateUpdate(@RequestBody @Validated(Update.class) User user, BindingResult result) {
+        return getString(user, getErrorMessage(result));
+    }
+
+    private String getString(User user, String errorMessage) {
         System.out.println(JSON.toJSONString(user));
-        String errorMessage = getErrorMessage(result);
         return StringUtils.isBlank(errorMessage) ? "Hello World" : errorMessage;
     }
 

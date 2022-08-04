@@ -1,5 +1,5 @@
 ### success
-POST http://localhost:8080/hello/validate
+POST http://localhost:8080/hello/validateCreate
 Content-Type: application/json
 
 {
@@ -10,11 +10,15 @@ Content-Type: application/json
   "email": "w@wangguangwu.com",
   "password": "123456",
   "amount": 9999,
-  "createTime": "2022-08-05 18:43:27"
+  "createTime": "2022-08-05 19:23:37",
+  "userInfo": {
+    "hobby": "足球",
+    "remark": "remark"
+  }
 }
 
 ### error
-POST http://localhost:8080/hello/validate
+POST http://localhost:8080/hello/validateCreate
 Content-Type: application/json
 
 {
@@ -25,7 +29,31 @@ Content-Type: application/json
   "email": "www.wangguangwu.com",
   "password": "123456",
   "amount": -1,
-  "createTime": "2022-08-04 18:43:27"
+  "createTime": "2022-08-04 18:43:27",
+  "userInfo": {
+    "hobby": "",
+    "remark": null
+  }
 }
+
+### error
+POST http://localhost:8080/hello/validateUpdate
+Content-Type: application/json
+
+{
+  "userId": null,
+  "username": "wangguangwu",
+  "mobile": "1111111111",
+  "gender": "男女",
+  "email": "www.wangguangwu.com",
+  "password": "123456",
+  "amount": -1,
+  "createTime": "2022-08-04 18:43:27",
+  "userInfo": {
+    "hobby": "",
+    "remark": null
+  }
+}
+
 
 

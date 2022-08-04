@@ -1,7 +1,5 @@
 package com.wangguangwu.validateexample.anno;
 
-import com.wangguangwu.validateexample.controller.GenderValid;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;

@@ -1,6 +1,5 @@
-package com.wangguangwu.validateexample.controller;
+package com.wangguangwu.validateexample.anno;
 
-import com.wangguangwu.validateexample.anno.Gender;
 import org.apache.commons.lang3.StringUtils;
 
 
