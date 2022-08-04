@@ -1,5 +1,5 @@
 ### success
-POST http://localhost:8080/hello/validateCreate
+POST http://localhost:8080/hello/validateCreateByAnno
 Content-Type: application/json
 
 {
@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ### error
-POST http://localhost:8080/hello/validateCreate
+POST http://localhost:8080/hello/validateCreateByAnno
 Content-Type: application/json
 
 {
@@ -37,7 +37,45 @@ Content-Type: application/json
 }
 
 ### error
-POST http://localhost:8080/hello/validateUpdate
+POST http://localhost:8080/hello/validateUpdateByAnno
+Content-Type: application/json
+
+{
+  "userId": null,
+  "username": "wangguangwu",
+  "mobile": "1111111111",
+  "gender": "男女",
+  "email": "www.wangguangwu.com",
+  "password": "123456",
+  "amount": -1,
+  "createTime": "2022-08-04 18:43:27",
+  "userInfo": {
+    "hobby": "",
+    "remark": null
+  }
+}
+
+### error
+POST http://localhost:8080/hello/validateCreateByLocal
+Content-Type: application/json
+
+{
+  "userId": null,
+  "username": "wangguangwu",
+  "mobile": "1111111111",
+  "gender": "男女",
+  "email": "www.wangguangwu.com",
+  "password": "123456",
+  "amount": -1,
+  "createTime": "2022-08-04 18:43:27",
+  "userInfo": {
+    "hobby": "",
+    "remark": null
+  }
+}
+
+### error
+POST http://localhost:8080/hello/validateUpdateByLocal
 Content-Type: application/json
 
 {
