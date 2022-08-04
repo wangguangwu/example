@@ -1,10 +1,14 @@
 package com.wangguangwu.crawexample.service.impl;
 
+import com.wangguangwu.crawexample.component.OkHttpCli;
+import com.wangguangwu.crawexample.service.CrawBaseService;
 import com.wangguangwu.crawexample.service.CrawService;
-import com.wangguangwu.crawexample.util.BossUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+
+import javax.annotation.Resource;
+
 
 /**
  * @author wangguangwu
@@ -13,16 +17,22 @@ import org.springframework.util.StopWatch;
 @Service
 public class CrawServiceImpl implements CrawService {
 
+    @Resource
+    private OkHttpCli okHttpCli;
+
+    @Resource
+    private CrawBaseService crawBaseService;
+
     @Override
     public void wholeProcess(String url) {
         StopWatch stopWatch = new StopWatch();
         // 爬取数据
         stopWatch.start("爬取数据");
-        crawData(url);
+        String html = crawData(url);
         stopWatch.stop();
         // 数据解析
         stopWatch.start("数据解析");
-        parseData();
+        parseHtml(html);
         stopWatch.stop();
         // 保存数据
         stopWatch.start("保存数据");
@@ -31,14 +41,19 @@ public class CrawServiceImpl implements CrawService {
         log.info("爬取数据总耗时: {}", stopWatch.prettyPrint());
     }
 
-    private void crawData(String url) {
-        // 获取 Boss 直聘的 cookie
-        String zpStoken = BossUtil.getZpStoken(url);
-        // 发送 http 请求
-
+    /**
+     * 爬取 boss 直聘数据
+     *
+     * @param url url
+     */
+    private String crawData(String url) {
+        // 构建请求头
+        String[] headers = crawBaseService.constructHeaders(url);
+        // 访问 boss 直聘
+        return okHttpCli.doGet(url, headers);
     }
 
-    private void parseData() {
+    private void parseHtml(String html) {
         throw new UnsupportedOperationException();
     }
 

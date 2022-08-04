@@ -1,0 +1,31 @@
+### success
+POST http://localhost:8080/hello/validate
+Content-Type: application/json
+
+{
+  "userId": 9,
+  "username": "wangguangwu",
+  "mobile": "18715311025",
+  "gender": "男",
+  "email": "w@wangguangwu.com",
+  "password": "123456",
+  "amount": 9999,
+  "createTime": "2022-08-05 18:43:27"
+}
+
+### error
+POST http://localhost:8080/hello/validate
+Content-Type: application/json
+
+{
+  "userId": null,
+  "username": "wangguangwu",
+  "mobile": "1111111111",
+  "gender": "男女",
+  "email": "www.wangguangwu.com",
+  "password": "123456",
+  "amount": -1,
+  "createTime": "2022-08-04 18:43:27"
+}
+
+
