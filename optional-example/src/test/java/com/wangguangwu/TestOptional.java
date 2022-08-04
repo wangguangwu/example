@@ -3,8 +3,11 @@ package com.wangguangwu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author wangguangwu
@@ -184,6 +187,18 @@ class TestOptional {
                 .filter(len6.and(len10).and(eq))
                 .isPresent();
         System.out.println(result);
+    }
+
+    @Test
+    void testOptionalAndStream() {
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+        Predicate<Integer> predicate = data -> data.compareTo(3) > 0;
+
+        Optional.ofNullable(list)
+                .orElse(null)
+                .stream()
+                .filter(predicate)
+                .forEach(System.out::println);
     }
 
 }
