@@ -1,8 +1,13 @@
 package com.wangguangwu;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -198,6 +203,49 @@ class TestOptional {
                 .stream()
                 .filter(predicate)
                 .forEach(System.out::println);
+    }
+
+    @Test
+    void testOptionalAndList1() {
+        List<Person> data = new ArrayList<>();
+        Person person = Optional.ofNullable(data)
+                // 此时 data 是空集合，并不为 null，所以 map 方法并不会返回 empty
+                // 抛出数组越界一场
+                .map(list -> list.get(0)).orElse(new Person("wangguangwu", 22));
+        Assertions.assertNull(person);
+    }
+
+    @Test
+    void testOptionalAndList2() {
+        List<Person> data = null;
+        Person person = Optional.ofNullable(data)
+                // 此时 data 为 null，所以 map 方法会返回 empty
+                .map(list -> list.get(0)).orElse(new Person("wangguangwu", 22));
+        Assertions.assertNotNull(person);
+        System.out.println(person);
+    }
+
+    @Test
+    void testOptionalAndList3() {
+        List<Person> data = new ArrayList<>();
+        Person person = Optional.ofNullable(data)
+                // 进行过滤，避免 list 为 null 不为空的情况
+                .filter(list -> list.size() > 0)
+                .map(list -> list.get(0))
+                .orElse(new Person("wangguangwu", 22));
+        Assertions.assertNotNull(person);
+        System.out.println(person);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class Person {
+
+        private String name;
+
+        private Integer age;
+
     }
 
 }
