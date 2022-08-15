@@ -6,11 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -246,6 +244,18 @@ class TestOptional {
 
         private Integer age;
 
+    }
+
+    @Test
+    public void testOptionalAndEmptyList() {
+        testEmptyList(new ArrayList<>());
+    }
+
+    private void testEmptyList(List<String> list) {
+        List<String> stringList = Optional.ofNullable(list)
+                .orElse(Collections.emptyList());
+        System.out.println(CollectionUtils.isEmpty(stringList));
+        System.out.println(CollectionUtils.isEmpty(Collections.emptyList()));
     }
 
 }
