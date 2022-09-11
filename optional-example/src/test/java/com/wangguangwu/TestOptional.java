@@ -258,4 +258,11 @@ class TestOptional {
         System.out.println(CollectionUtils.isEmpty(Collections.emptyList()));
     }
 
+    @Test
+    public void testLength() {
+        String a = "915601";
+        System.out.println(a.substring(a.length() -1));
+        System.out.println(a.substring(0, a.length() - 1));
+    }
+
 }

@@ -24,6 +24,10 @@ public class ApiTest {
         System.out.println(test4(pm));
     }
 
+    @Test
+    void testEmpty() {
+    }
+
     public static String test1(Map<String, String> pm) {
         Optional<Map<String, String>> mapOptional = Optional.ofNullable(pm);
 
