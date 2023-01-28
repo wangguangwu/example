@@ -113,4 +113,21 @@ public class RedisTest {
 
         TimeUnit.HOURS.sleep(1);
     }
+
+    //==========================使用 Redis 进行限流=================================
+
+    @Test
+    public void limit() throws Exception{
+        String prefix = "order-service";
+        long maxQps = 10;
+        long nowSeconds = System.currentTimeMillis() / 1000;
+        for (int i = 0; i < 15; i++) {
+            Long result = asyncCommands.incr(prefix + nowSeconds).get(1, TimeUnit.SECONDS);
+            if (result > maxQps) {
+                System.out.println("请求被限流");
+            } else {
+                System.out.println("请求被正常处理");
+            }
+        }
+    }
 }
