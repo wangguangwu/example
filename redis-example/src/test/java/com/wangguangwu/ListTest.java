@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Time;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -109,6 +111,63 @@ public class ListTest {
         Thread consumer2 = new Thread(consumerRunnable);
         consumer1.start();
         consumer2.start();
+        TimeUnit.HOURS.sleep(1);
+    }
+
+    //============================提醒功能=================================
+
+    /*
+     * 可以使用 Redis 的 List 实现消息队列，但存在消息丢失的可能性，除非这个消息是可以接受丢失的
+     *
+     * 一个 Consumer 在消费消息时，是直接通过 BRPOP 命令把消息从 List 中弹出来
+     * 在消息弹出之后但未被 Consumer 处理之前，Consumer 可能会宕机，那么消息就丢失了
+     */
+
+    @Test
+    public void likeList() throws Exception {
+        long videoId = 1089;
+        final String listName = "like-list-" + videoId;
+        Thread createLike = new Thread(
+                () -> {
+                    for (int i = 0; i < 1000000; i++) {
+                        try {
+                            // 不断往队列中插入数据
+                            asyncCommands
+                                    .rpush(listName, String.valueOf(i))
+                                    .get(1, TimeUnit.SECONDS);
+                            TimeUnit.SECONDS.sleep(1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        createLike.start();
+
+        Thread kz = new Thread(
+                () -> {
+                    while (true) {
+                        try {
+                            // 拉取前 10 个点赞
+                            List<String> useIds = asyncCommands
+                                    .lrange(listName, 0, 10)
+                                    .get(1, TimeUnit.SECONDS);
+                            // 每隔 3s 中拉取一次
+                            TimeUnit.SECONDS.sleep(3);
+                            System.out.println("小伙伴:[" + useIds + "]点赞了视频:[" + videoId + "]");
+                            // 删除已经拉取到的点赞信息
+                            String del = asyncCommands.ltrim(listName, useIds.size(), -1)
+                                    .get(1, TimeUnit.SECONDS);
+                            if ("OK".equals(del)) {
+                                System.out.println("删除成功");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        kz.start();
         TimeUnit.HOURS.sleep(1);
     }
 }
