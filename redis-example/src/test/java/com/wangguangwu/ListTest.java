@@ -9,7 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -169,5 +172,50 @@ public class ListTest {
         );
         kz.start();
         TimeUnit.HOURS.sleep(1);
+    }
+
+    //============================热点列表=================================
+
+    @Test
+    public void hotList() throws Exception {
+        DateTimeFormatter dateTimeFormatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        asyncCommands.del("hot-list").get(1, TimeUnit.SECONDS);
+        // 初始化热点列表
+        for (int i = 0; i < 10; i++) {
+            asyncCommands.rpush("hot-list",
+                    "第[" + i + "]条热点新闻，更新时间:" + dateTimeFormatter.format(LocalDateTime.now()));
+        }
+
+        // 启动更新 hotList 的线程，模拟热点新闻的更新操作
+        Thread changeHotList = new Thread(
+                () -> {
+                    while (true) {
+                        try {
+                            int index = ThreadLocalRandom.current().nextInt(0, 10);
+                            // 更新数据
+                            asyncCommands.lset("hot-list",
+                                    index,
+                                    "第[" + index + "]条热点新闻，更新时间:" + dateTimeFormatter.format(LocalDateTime.now()));
+                            TimeUnit.SECONDS.sleep(1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        changeHotList.start();
+
+        // 模拟客户端更新热点新闻的拉取操作
+        while (true) {
+            List<String> hotList = asyncCommands.lrange("hot-list", 0, -1)
+                    .get(1, TimeUnit.SECONDS);
+            TimeUnit.SECONDS.sleep(5);
+            System.out.println("热点新闻:");
+            for (String hot : hotList) {
+                System.out.println(hot);
+            }
+            System.out.println("===================");
+        }
     }
 }
