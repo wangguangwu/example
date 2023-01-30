@@ -4,15 +4,16 @@ import cn.hutool.core.collection.CollectionUtil;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
-
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author wangguangwu
@@ -52,12 +53,28 @@ public class HashTest {
         redisClient.shutdown();
     }
 
-    //============================辅助方法=================================
+    //============================缓存用户信息=================================
 
     @Test
     public void userCache() throws Exception {
         mockLogin("+8613912345678", "654321");
         mockLogin("+8613912345678", "123456");
+    }
+
+    //=============================保存购物车数据=================================
+
+    @Test
+    public void cartDao() throws ExecutionException, InterruptedException, TimeoutException {
+        CartDao cartDao = new CartDao(asyncCommands);
+        cartDao.add(1024, "83694");
+        cartDao.add(1024, "1273979");
+        cartDao.add(1024, "123323");
+        cartDao.submitOrder(1024);
+        cartDao.remove(1024, "123323");
+        cartDao.submitOrder(1024);
+
+        cartDao.incr(1024, "83694");
+        cartDao.decr(1024, "1273979");
     }
 
     //============================私有方法=================================
@@ -96,5 +113,4 @@ public class HashTest {
         }
         System.out.println("===========================");
     }
-
 }
