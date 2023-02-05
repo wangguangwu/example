@@ -52,17 +52,113 @@ public class CompletableFutureTest {
                 }
         );
         countDownLatch.await();
-        // 模拟主程序耗时
-        TimeUnit.MILLISECONDS.sleep(300);
         System.out.println("获取用户信息: " + userFuture.get());
         System.out.println("获取商品信息: " + goodsFuture.get());
-        System.out.println("总耗时: " + (System.currentTimeMillis() - startTime));
+        System.out.printf("耗时: %s ms \n", (System.currentTimeMillis() - startTime));
+        // 模拟主程序耗时
+        TimeUnit.MILLISECONDS.sleep(600);
+
+        System.out.printf("总耗时: %s ms \n", (System.currentTimeMillis() - startTime));
     }
 
     @Test
-    public void testCompletableFuture() {
+    public void testCompletableFuture() throws InterruptedException, ExecutionException {
         long startTime = System.currentTimeMillis();
 
-        // 获取用
+        // 用户服务
+        CompletableFuture<String> userFuture = CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return "用户 A";
+                }
+        );
+
+        // 商品服务
+        CompletableFuture<String> goodsFuture = CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(400);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return "商品 A";
+                }
+        );
+
+        // 模拟主程序耗时
+        System.out.println("获取用户信息: " + userFuture.get());
+        System.out.println("获取商品信息: " + goodsFuture.get());
+        System.out.printf("耗时: %s ms \n", (System.currentTimeMillis() - startTime));
+        TimeUnit.MILLISECONDS.sleep(600);
+        System.out.printf("总耗时: %s ms \n", (System.currentTimeMillis() - startTime));
+    }
+
+    @Test
+    public void testCompletableFutureGet() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> test1 = CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return "Hello World";
+                }
+        );
+
+        // getNow() 方法测试
+        System.out.println(test1.getNow("Hello China"));
+        System.out.println("=========================================");
+
+        // join() 方法测试
+        CompletableFuture<Integer> test2 = CompletableFuture.supplyAsync(
+                () -> 1 / 0
+        );
+        System.out.println(test2.join());
+        System.out.println("=========================================");
+
+        // get() 方法测试
+        CompletableFuture<Integer> test3 = CompletableFuture.supplyAsync(
+                () -> 1 / 0
+        );
+        System.out.println(test3.get());
+    }
+
+    @Test
+    public void testCompletableThenRun() throws ExecutionException, InterruptedException {
+        long startTime = System.currentTimeMillis();
+
+        CompletableFuture<Void> test1 = CompletableFuture.runAsync(
+                () -> {
+                    try {
+                        // 执行任务 A
+                        TimeUnit.MILLISECONDS.sleep(600);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+
+        // 做完第一个任务后，再做第二个任务，第二个任务也没有返回值
+        CompletableFuture<Void> test2 = test1.thenRunAsync(
+                () -> {
+                    try {
+                        // 执行任务 B
+                        TimeUnit.MILLISECONDS.sleep(400);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+        // get() 方法测试
+        System.out.println(test2.get());
+
+        // 模拟主程序耗时
+        TimeUnit.MILLISECONDS.sleep(600);
+        System.out.printf("总耗时: %s ms\n", (System.currentTimeMillis() - startTime));
     }
 }
