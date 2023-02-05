@@ -8,6 +8,7 @@
         <module>optional-example</module>
         <module>forkjoin-example</module>
         <module>redis-example</module>
+        <module>completableFuture-example</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
