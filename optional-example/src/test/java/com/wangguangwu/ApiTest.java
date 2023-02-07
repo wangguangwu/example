@@ -1,5 +1,7 @@
 package com.wangguangwu;
 
+import com.wangguangwu.optional.Order;
+import com.wangguangwu.optional.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -70,5 +72,23 @@ public class ApiTest {
                 }).orElse("test4停车了");
     }
 
-
+    @Test
+    void testNull() {
+        Order order = new Order();
+        order.setUser(null);
+        String userCode = Optional.ofNullable(order)
+                .map(Order::getUser)
+                .map(User::getUserCode)
+                .map(String::toUpperCase)
+                .orElse("");
+        System.out.println("userCode:" + userCode);
+        if (order != null) {
+            if (order.getUser() != null) {
+                if (order.getUser().getUserCode() != null) {
+                    userCode = order.getUser().getUserCode().toUpperCase();
+                }
+            }
+        }
+        System.out.println("userCode:" + userCode);
+    }
 }

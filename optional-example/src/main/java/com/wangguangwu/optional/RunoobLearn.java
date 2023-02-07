@@ -36,5 +36,4 @@ public class RunoobLearn {
         Integer value2 = b.get();
         return value1 + value2;
     }
-
 }
